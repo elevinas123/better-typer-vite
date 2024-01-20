@@ -26,7 +26,7 @@ export default function App() {
   const [time, setTime] = useState(testTime)
   const [timeStarted, setTimeStarted] = useState(false)
   const [gameEnded, setGameEnded] = useState(false)
-  const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut orci nibh. Vestibulum pretium lobortis dignissim. Nam at auctor nulla. Fusce commodo nisi ante, vel sollicitudin ipsum porttitor eu. Fusce a porttitor lacus. Vivamus vel magna vel tellus dignissim rutrum. Quisque auctor diam eu lectus pellentesque, non posuere dui aliquet"
+  const text = "In the heart of the ancient forest, the gentle breeze whispered secrets to the leaves, carrying tales of the ages. Sunlight filtered through the canopy, casting a kaleidoscope of shadows on the forest floor. Here, the flora and fauna lived in harmonious synchrony, each creature and plant playing its part in the grand symphony of nature."
 
   const handleTimerEnd = () => {
     setGameEnded(true)
