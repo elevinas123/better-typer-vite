@@ -52,9 +52,14 @@ export default function Text(props) {
         let splitWords = spaceSplit(mainText)
         let splitTextWritten = spaceSplit(textWritten)
         setWords(splitWords.map((word, index) => <Word updateCursorPosition ={updateCursorPosition }  index={index} pointerIndex={splitTextWritten.length-1} pointer={index==splitTextWritten.length-1?true:false} word={word} key={index} wordWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
-
+        if (textWritten == "") {
+            setCursorPosition({left: 0, top: 32})
+        }
     }, [textWritten])
     useEffect(() => {
+        if (timeRef.current == false) {
+            setCursorPosition({left: 0, top: 32})
+        }
         const handleKeyPress = (event) => {
             if (!timeRef.current) {
                 props.startTime()

@@ -15,7 +15,7 @@ import { FaTools } from "react-icons/fa";
 import { FaGlobeAmericas } from "react-icons/fa";
 import { FaRedoAlt } from "react-icons/fa";
 import Text from "./components/Text";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { atom, useAtom } from 'jotai';
 import { textWrittenAtom } from "./atoms/atoms";
 import EndDiagram from "./components/EndDiagram";
@@ -27,7 +27,7 @@ export default function App() {
   const [timeStarted, setTimeStarted] = useState(false)
   const [gameEnded, setGameEnded] = useState(false)
   const text = "In the heart of the ancient forest, the gentle breeze whispered secrets to the leaves, carrying tales of the ages. Sunlight filtered through the canopy, casting a kaleidoscope of shadows on the forest floor. Here, the flora and fauna lived in harmonious synchrony, each creature and plant playing its part in the grand symphony of nature."
-
+  const intervalRef = useRef(null);
   const handleTimerEnd = () => {
     setGameEnded(true)
     setTimeStarted(false)
@@ -41,23 +41,40 @@ export default function App() {
 
   useEffect(() => {
     if (timeStarted) {
-      const interval = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setTime(i => {
-            if (i - 1 <= 0) {
-                clearInterval(interval); // Clears the interval
-                handleTimerEnd(); // Calls the handleTimerEnd function
-                return 0
-            }
-            return i - 1; // Decrements the time
+          if (i - 1 <= 0) {
+            clearInterval(intervalRef.current); // Clears the interval using the ref
+            handleTimerEnd(); // Calls the handleTimerEnd function
+            return 0;
+          }
+          return i - 1; // Decrements the time
         });
       }, 1000);
+    } else {
+      // Clear the interval if timeStarted is false
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     }
-  }, [timeStarted])
+  
+    // Cleanup function: Clear the interval when the component is unmounted or when timeStarted changes
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [timeStarted]);
     
   const startTime = () => {
     setTimeStarted(true)
    
 }
+  const handleReset = () => {
+    setTimeStarted(false)
+    setTime(testTime)
+    setTextWritten("")
+  }
 
 
   return (
@@ -114,7 +131,7 @@ export default function App() {
         {!gameEnded?
           <div className="flex flex-col  text-lg mb-32 ">
           <div className="flex relative">
-            <div className="absolute text-xl text-yellow-500">{time}</div>
+            <div className="absolute text-xl text-yellow-500">{timeStarted && time}</div>
             <div className="flex flex-row justify-center w-full">
               
               <div className="ml-4 flex flex-row" ><div  className=" pt-0.5 flex justify-center items-center mr-2"><FaGlobeAmericas  size="0.85em" /></div> english</div>
@@ -122,7 +139,7 @@ export default function App() {
           </div>
           <Text text={text} startTime={startTime} timeStarted={timeStarted} />
           <div className="flex flex-row justify-center mt-10 text-xl">
-            <div className=" "><FaRedoAlt /></div>
+            <div onClick={handleReset} className=" "><FaRedoAlt /></div>
           </div>
         </div>
           :
