@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react"
 import Word from "./Word"
-import Cursor from "./cursor";
+import Cursor from './Cursor';
 
 
 
@@ -9,7 +9,7 @@ export default function Text(props) {
     const [textWritten, setTextWritten] = useState("")
     const containerRef = useRef(null)
     const [words, setWords] = useState("")
-    const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 0 });
+    const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 32 });
     const reqText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut orci nibh. Vestibulum pretium lobortis dignissim. Nam at auctor nulla. Fusce commodo nisi ante, vel sollicitudin ipsum porttitor eu. Fusce a porttitor lacus. Vivamus vel magna vel tellus dignissim rutrum. Quisque auctor diam eu lectus pellentesque, non posuere dui aliquet"
 
     useEffect(() => {
