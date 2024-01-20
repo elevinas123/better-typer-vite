@@ -56,13 +56,7 @@ export default function Text(props) {
         const handleKeyPress = (event) => {
             // Prevent default behavior if needed
             // event.preventDefault();
-            // Update the state with the new character
-            if (event.key === "Shift") {
-                return
-            }
-            if (event.key === "CapsLock") {
-                return
-            }
+            
             if (event.key === "Backspace") {
                 setTextWritten(textWritten => {
                     // Check if the last 3 characters are "/br" (assuming "/br" is a marker for a space)
@@ -76,6 +70,9 @@ export default function Text(props) {
     
             } else if (event.key == " ") {
                 setTextWritten(textWritten => textWritten + "/sp /sp");
+                return
+            }
+            if (event.key.length > 1) {
                 return
             }
             
@@ -99,3 +96,4 @@ export default function Text(props) {
         </div>
     )
 }
+
