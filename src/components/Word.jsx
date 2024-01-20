@@ -4,7 +4,6 @@ import Letter from "./Letter"
 
 
 export default function Word(props) {
-
     const [letters, setLetters] = useState("")
     const [underlined, setUnderlined] = useState(false)
     
@@ -12,8 +11,6 @@ export default function Word(props) {
         let u = false
         let splitWord = props.word.split("")
         let splitWordWritten = props.wordWritten.split("")
-        console.log("split word", splitWord)
-        console.log("splitWordWritten", splitWordWritten)
         if (splitWord.length == splitWordWritten.length) {
             for(let i=0; i<splitWordWritten.length; i++) {
                 console.log(splitWord[i])

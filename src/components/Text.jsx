@@ -1,17 +1,19 @@
 import {useEffect, useRef, useState} from "react"
 import Word from "./Word"
 import Cursor from './Cursor';
-
-
+import { atom, useAtom } from 'jotai';
+import { textWrittenAtom } from "../atoms/atoms";
 
 export default function Text(props) {
 
-    const [textWritten, setTextWritten] = useState("")
+    const [textWritten, setTextWritten] = useAtom(textWrittenAtom)
     const containerRef = useRef(null)
     const [words, setWords] = useState("")
     const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 32 });
-    const reqText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut orci nibh. Vestibulum pretium lobortis dignissim. Nam at auctor nulla. Fusce commodo nisi ante, vel sollicitudin ipsum porttitor eu. Fusce a porttitor lacus. Vivamus vel magna vel tellus dignissim rutrum. Quisque auctor diam eu lectus pellentesque, non posuere dui aliquet"
+    const timeRef = useRef();
+    timeRef.current = props.timeStarted;
 
+    
     useEffect(() => {
         console.log("jo")
     }, [])
@@ -46,7 +48,7 @@ export default function Text(props) {
     }
 
     useEffect(() => {
-        let mainText = reqText.split(" ").map(i => i+"/sp /sp").join("")
+        let mainText = props.text.split(" ").map(i => i+"/sp /sp").join("")
         let splitWords = spaceSplit(mainText)
         let splitTextWritten = spaceSplit(textWritten)
         setWords(splitWords.map((word, index) => <Word updateCursorPosition ={updateCursorPosition }  index={index} pointerIndex={splitTextWritten.length-1} pointer={index==splitTextWritten.length-1?true:false} word={word} key={index} wordWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
@@ -54,6 +56,9 @@ export default function Text(props) {
     }, [textWritten])
     useEffect(() => {
         const handleKeyPress = (event) => {
+            if (!timeRef.current) {
+                props.startTime()
+            }
             // Prevent default behavior if needed
             // event.preventDefault();
             
@@ -85,7 +90,10 @@ export default function Text(props) {
         return () => {
           document.removeEventListener('keydown', handleKeyPress);
         };
-      }, [])
+      }, [props.timeStart])
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div ref={containerRef}  className="relative">
