@@ -3,12 +3,13 @@ import Word from "./Word"
 import Cursor from './Cursor';
 import { atom, useAtom } from 'jotai';
 import { textWrittenAtom } from "../atoms/atoms";
+import SentenceLine from "./SentenceLine";
 
 export default function Text(props) {
 
     const [textWritten, setTextWritten] = useAtom(textWrittenAtom)
     const containerRef = useRef(null)
-    const [words, setWords] = useState("")
+    const [sentences, setSentences] = useState("")
     const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 32 });
     const timeRef = useRef();
     timeRef.current = props.timeStarted;
@@ -35,27 +36,23 @@ export default function Text(props) {
 
     
 
-    const spaceSplit = (sentence) => {
-        let splitSentence = sentence.split("/sp")
-        if (splitSentence[splitSentence.length-1] == "") {
-            splitSentence.pop()
-        } 
-        let newSentence = []
-        for(let i=0; i<splitSentence.length; i++) {
-            newSentence.push(splitSentence[i])
-        }
-        return newSentence
+    const enterSplit = (sentence) => {
+        let splitSentence = sentence.split("/enter")
+       
+        
+        return splitSentence
     }
-
     useEffect(() => {
-        let mainText = props.text.split(" ").map(i => i+"/sp /sp").join("")
-        let splitWords = spaceSplit(mainText)
-        let splitTextWritten = spaceSplit(textWritten)
-        setWords(splitWords.map((word, index) => <Word updateCursorPosition ={updateCursorPosition }  index={index} pointerIndex={splitTextWritten.length-1} pointer={index==splitTextWritten.length-1?true:false} word={word} key={index} wordWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
+        let mainText = props.text
+        let splitText = enterSplit(mainText)
+        let splitTextWritten = enterSplit(textWritten)
+        console.log("splitTextWritten", splitTextWritten)
+        setSentences(splitText.map((sentence, index) => <SentenceLine updateCursorPosition ={updateCursorPosition }  index={index} pointer={index==splitTextWritten.length-1?true:false} sentence={sentence} key={index} sentenceWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
         if (textWritten == "") {
             setCursorPosition({left: 0, top: 32})
         }
     }, [textWritten])
+    
     useEffect(() => {
         if (timeRef.current == false) {
             setCursorPosition({left: 0, top: 32})
@@ -77,9 +74,12 @@ export default function Text(props) {
                     }
                 });
                 return
-    
-            } else if (event.key == " ") {
+                
+            } else if (event.key === " ") {
                 setTextWritten(textWritten => textWritten + "/sp /sp");
+                return
+            } else if (event.key === "Enter") {
+                setTextWritten(textWritten => textWritten + "/enter")
                 return
             }
             if (event.key.length > 1) {
@@ -102,11 +102,14 @@ export default function Text(props) {
 
     return (
         <div ref={containerRef}  className="relative">
-            <div className="text-2xl  mt-4 flex flex-row flex-wrap overflow-hidden text-pretty select-none" >
-                {words}
+            <div className="text-2xl  mt-4 flex flex-col flex-wrap overflow-hidden text-pretty select-none" >
+                {sentences}
             </div>
             <Cursor  left={cursorPosition.left} top={cursorPosition.top} />
         </div>
     )
 }
+
+
+
 
