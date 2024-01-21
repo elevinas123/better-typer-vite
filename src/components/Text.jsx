@@ -12,6 +12,7 @@ export default function Text(props) {
     const [sentences, setSentences] = useState("")
     const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 32 });
     const timeRef = useRef();
+    const [index, setIndex] = useState(0)
     timeRef.current = props.timeStarted;
 
     
@@ -44,10 +45,10 @@ export default function Text(props) {
     }
     useEffect(() => {
         let mainText = props.text
-        let splitText = enterSplit(mainText)
-        let splitTextWritten = enterSplit(textWritten)
+        let splitText = enterSplit(mainText).splice(Math.max(0, index-1),  index==0?5+index:4+index)
+        let splitTextWritten = enterSplit(textWritten).splice(Math.max(0, index-1), index==0?5+index:4+index)
         console.log("splitTextWritten", splitTextWritten)
-        setSentences(splitText.map((sentence, index) => <SentenceLine updateCursorPosition ={updateCursorPosition }  index={index} pointer={index==splitTextWritten.length-1?true:false} sentence={sentence} key={index} sentenceWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
+        setSentences(splitText.map((sentence, index) => <SentenceLine prevIndex={index+1} updateCursorPosition ={updateCursorPosition }  index={index} pointer={index==splitTextWritten.length-1?true:false} sentence={sentence} key={index} sentenceWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
         if (textWritten == "") {
             setCursorPosition({left: 0, top: 32})
         }
@@ -79,6 +80,7 @@ export default function Text(props) {
                 setTextWritten(textWritten => textWritten + "/sp /sp");
                 return
             } else if (event.key === "Enter") {
+                setIndex(i=> i+1)
                 setTextWritten(textWritten => textWritten + "/enter")
                 return
             }
@@ -102,7 +104,7 @@ export default function Text(props) {
 
     return (
         <div ref={containerRef}  className="relative">
-            <div className="text-2xl  mt-4 flex flex-col flex-wrap overflow-hidden text-pretty select-none" >
+            <div className=" relative text-2xl  mt-4 flex flex-col flex-wrap overflow-hidden text-pretty select-none" >
                 {sentences}
             </div>
             <Cursor  left={cursorPosition.left} top={cursorPosition.top} />

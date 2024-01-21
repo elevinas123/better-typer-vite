@@ -13,12 +13,9 @@ export default function EndDiagram (props) {
     const [acc, setAcc] = useState(0)
 
     useEffect(() => {
-        console.log("hi1")
         const splitTextWritten = textWritten.split("/sp /sp")
         const splitText = props.text.split(" ")
-        console.log("hi2", splitTextWritten)
-        console.log("hi2", props.text)
-        console.log("hi3", splitText)
+        
         let acuracy = splitTextWritten.length
         for(let i=0; i<splitTextWritten.length - 1; i++) {
             let a = false
@@ -60,6 +57,7 @@ export default function EndDiagram (props) {
                 <div className="text-3xl text-sub-color" >acc</div>
                 <div className="text-yellow-500 text-4xl" >{acc}%</div>
             </div>
+            <div onClick={props.handleReset}>reset</div>
         </div>
     )
 }

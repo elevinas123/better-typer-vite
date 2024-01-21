@@ -83,6 +83,7 @@ export default function App() {
 
   }
 
+
   useEffect(() => {
     console.log("is apppasdasda", textWritten)
   }, [textWritten])
@@ -119,6 +120,7 @@ export default function App() {
    
 }
   const handleReset = () => {
+    setGameEnded(false)
     setTimeStarted(false)
     setTime(testTime)
     setTextWritten("")
@@ -191,7 +193,7 @@ export default function App() {
           </div>
         </div>
           :
-          <EndDiagram time={testTime} text={text} />
+          <EndDiagram time={testTime} handleReset={handleReset} text={text} />
 
         }
 
