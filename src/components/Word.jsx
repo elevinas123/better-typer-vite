@@ -29,7 +29,6 @@ export default function Word(props) {
     }, [props.wordWritten])
     useEffect(() => {
         if (props.word.length === 1 && props.word[0] === ' ') {
-            console.log("props.pointer", props.pointer)
             setLetters( [<Letter letter=" " pointer={props.pointer?true:false} updateCursorPosition={props.updateCursorPosition }  />])
             return
         }

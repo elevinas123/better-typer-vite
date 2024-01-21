@@ -53,7 +53,6 @@ export default function SentenceLine(props) {
         for(let i=0; i<splitSpaceWords.length; i++) {
             if  (i+1<splitSpaceWords.length && splitSpaceWords[i+1] !== " " && splitSpaceWords[i] == " " && u === false) {
                 newWords.push(<Word updateCursorPosition ={props.updateCursorPosition }  index={i} pointerIndex={splitWordsWritten.length-1} pointer={-1==splitWordsWritten.length-1 && props.pointer?true:false} word={" "} key={i} wordWritten={"/nw"} />)
-                console.log(splitWordsWritten.length - 1, props.pointer)
 
             }
             else if (splitSpaceWords[i] !== " " || u) {
@@ -64,7 +63,6 @@ export default function SentenceLine(props) {
                 newWords.push(<Word updateCursorPosition ={props.updateCursorPosition }  index={i} pointerIndex={splitWordsWritten.length-1} pointer={i==splitWordsWritten.length-1 && props.pointer?true:false} word={" "} key={i} wordWritten={"/nw"} />)
             }
         }
-        console.log("newWordsadas ", newWords)
         setSentences(newWords)
     }, [props])
 

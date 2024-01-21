@@ -22,56 +22,12 @@ import EndDiagram from "./components/EndDiagram";
 
 export default function App() {
   const [textWritten, setTextWritten] = useAtom(textWrittenAtom)
-  const testTime = 30
+  const testTime = 100
   const [time, setTime] = useState(testTime)
   const [timeStarted, setTimeStarted] = useState(false)
   const [gameEnded, setGameEnded] = useState(false)
-  const code = [
-  `function calculateFactorial(n) {\\n   if (n === 0 || n === 1) {\\n      return 1;\\n   } else {\\n      return n * calculateFactorial(n - 1);\\n   }\\n}`,
-
-  `function fibonacci(n) {\\n
-    if (n <= 1) {\\n
-      return n;\\n
-    } else {\\n
-      return fibonacci(n - 1) + fibonacci(n - 2);\\n
-    }
-  }`,
-
-  `function reverseString(str) {\\n
-    return str.split('').reverse().join('');\\n
-  }`,
-
-  `function isPalindrome(str) {\\n
-    const cleanedStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');\\n
-    const reversedStr = reverseString(cleanedStr);\\n
-    return cleanedStr === reversedStr;\\n
-  }`,
-
-
-  `console.log("Factorial of 5:", calculateFactorial(5));\\n
-  console.log("Fibonacci sequence of 10:", fibonacci(10));\\n
-  console.log("Is 'racecar' a palindrome?", isPalindrome("racecar"));`
-  ];
-  const text = code[0]
-  .replace(/\s/g, '/sp /sp')  // Replace spaces with "/sp /sp"
-  .replace(/\\n/g, '/enter')
-  useEffect(() => {
-    const preprocessedCode = code[0]
-    .replace(/\s+/g, '/sp /sp')  // Replace spaces with "/sp /sp"
-    .replace(/\\n/g, '/enter')     // Replace line breaks with "/enter"
-    console.log(preprocessedCode);
-
-    /*
-    .replace(/'/g, `/dbr'/dbr`)   // Replace single quotes with "/dbrQuoteChar/dbr"
-    .replace(/"/g, '/dbr"/dbr')  // Replace double quotes with "/dbrDoubleQuoteChar/dbr"
-    .replace(/\(/g, '/dbr(/dbr')  // Replace parentheses with "/dbrParenthesesChar/dbr"
-    .replace(/\)/g, '/dbr)/dbr')  // Replace parentheses with "/dbrParenthesesChar/dbr"
-    .replace(/\[/g, '/dbr[/dbr')  // Replace square brackets with "/dbrSquareBracketChar/dbr"
-    .replace(/\]/g, '/dbr]/dbr')  // Replace square brackets with "/dbrSquareBracketChar/dbr"
-    .replace(/\{/g, '/dbr{/dbr')  // Replace curly brackets with "/dbrCurlyBracketChar/dbr"
-    .replace(/\}/g, '/dbr}/dbr'); // Replace curly brackets with "/dbrCurlyBracketChar/dbr"
-    */
-  }, [])
+  
+  
 
 
 
@@ -187,13 +143,13 @@ export default function App() {
               <div className="ml-4 flex flex-row" ><div  className=" pt-0.5 flex justify-center items-center mr-2"><FaGlobeAmericas  size="0.85em" /></div> english</div>
             </div>
           </div>
-          <Text text={text} startTime={startTime} timeStarted={timeStarted} />
+          <Text  startTime={startTime} timeStarted={timeStarted} />
           <div className="flex flex-row justify-center mt-10 text-xl">
             <div onClick={handleReset} className=" "><FaRedoAlt /></div>
           </div>
         </div>
           :
-          <EndDiagram time={testTime} handleReset={handleReset} text={text} />
+          <EndDiagram time={testTime} handleReset={handleReset}  />
 
         }
 

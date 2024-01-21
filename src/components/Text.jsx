@@ -14,8 +14,17 @@ export default function Text(props) {
     const timeRef = useRef();
     const [index, setIndex] = useState(0)
     timeRef.current = props.timeStarted;
-
-    
+    const indexRef = useRef()
+    indexRef.current = index
+    const code = [
+        `function calculateFactorial(n) {\\n   if (n === 0 || n === 1) {\\n      return 1;\\n   } else {\\n      return n * calculateFactorial(n - 1);\\n   }\\n}`,
+        
+        `function fibonacci(n) {\\n  if (n <= 1) {\\n    return n;\\n  } else {\\n    return fibonacci(n - 1) + fibonacci(n - 2);\\n  }\\n}\\n`,
+        
+    ];
+    const [text, setText] = useState(code[0].replace(/\s/g, '/sp /sp').replace(/\\n/g, '/enter'))
+    const textRef = useRef()
+    textRef.current = text
     useEffect(() => {
         console.log("jo")
     }, [])
@@ -44,15 +53,15 @@ export default function Text(props) {
         return splitSentence
     }
     useEffect(() => {
-        let mainText = props.text
-        let splitText = enterSplit(mainText).splice(Math.max(0, index-1),  index==0?5+index:4+index)
-        let splitTextWritten = enterSplit(textWritten).splice(Math.max(0, index-1), index==0?5+index:4+index)
-        console.log("splitTextWritten", splitTextWritten)
+        let splitText = enterSplit(text).splice(Math.max(0, index-1),  5)
+        let splitTextWritten = enterSplit(textWritten).splice(Math.max(0, index-1), 5)
         setSentences(splitText.map((sentence, index) => <SentenceLine prevIndex={index+1} updateCursorPosition ={updateCursorPosition }  index={index} pointer={index==splitTextWritten.length-1?true:false} sentence={sentence} key={index} sentenceWritten={splitTextWritten[index] !== undefined?splitTextWritten[index]:""} />))
         if (textWritten == "") {
             setCursorPosition({left: 0, top: 32})
         }
-    }, [textWritten])
+        console.log("textWritten", textWritten)
+        console.log("text", splitText)
+    }, [textWritten, text])
     
     useEffect(() => {
         if (timeRef.current == false) {
@@ -82,6 +91,11 @@ export default function Text(props) {
             } else if (event.key === "Enter") {
                 setIndex(i=> i+1)
                 setTextWritten(textWritten => textWritten + "/enter")
+                console.log("refText", textRef.current.split("/enter").length)
+                console.log("refIndex", 2+indexRef.current)
+                if (textRef.current.split("/enter").length<4+indexRef.current) {
+                    setText(text => text +"/enter"+ code[Math.floor(Math.random() * code.length)].replace(/\s/g, '/sp /sp').replace(/\\n/g, '/enter'))
+                }
                 return
             }
             if (event.key.length > 1) {

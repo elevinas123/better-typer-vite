@@ -42,7 +42,6 @@ export default function EndDiagram (props) {
                 break
             }
         }
-        console.log("hi4", acuracy)
         setWpm(60/props.time*splitTextWritten.length)
         setAcc(Math.floor(acuracy/splitTextWritten.length * 100))
     }, [textWritten])
