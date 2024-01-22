@@ -22,20 +22,32 @@ import EndDiagram from "./components/EndDiagram";
 
 export default function App() {
   const [textWritten, setTextWritten] = useAtom(textWrittenAtom)
-  const testTime = 100
+  const [testTime, setTestTime] = useState(15)
+  const testTimeRef = useRef()
+  testTimeRef.current = testTime
   const [time, setTime] = useState(testTime)
   const [timeStarted, setTimeStarted] = useState(false)
   const [gameEnded, setGameEnded] = useState(false)
+  const [triggerTransition, setTriggerTransition] = useState(false);
   
-  
-
+  useEffect(() => {
+    console.log("cia")
+    setTriggerTransition(true);
+    
+    // Optional: Reset the trigger after the transition duration
+    const timer = setTimeout(() => {
+        setTriggerTransition(false);
+    }, 200); // match this duration to your CSS transition-duration
+    
+    return () => clearTimeout(timer);
+}, [testTime]); // Empty array means this effect runs once on mount
 
 
   const intervalRef = useRef(null);
   const handleTimerEnd = () => {
     setGameEnded(true)
     setTimeStarted(false)
-    setTime(testTime)
+    setTime(testTimeRef)
 
   }
 
@@ -81,6 +93,12 @@ export default function App() {
     setTime(testTime)
     setTextWritten("")
   }
+  const handleTimeChange = (e) => {
+    console.log(e.target.id)
+    if (e.target.id == "custom") return
+    setTestTime(Number(e.target.id))
+    handleReset()
+  }
 
 
   return (
@@ -119,11 +137,11 @@ export default function App() {
                 
               </div>
               <div className="flex flex-row ml-4 text-xs" >
-                <div className="" >15</div>
-                <div className="ml-4" >30</div>
-                <div className="ml-4" >60</div>
-                <div className="ml-4" >120</div>
-                <div className="ml-4 flex flex-row" ><div  className=" pt-0.5 flex justify-center items-center mr-2"><FaTools size="1em" /></div></div>
+                <button onClick={handleTimeChange}  id="15" className={`ml-4 hover:text-text-color ${Number(testTime)==15?"text-yellow-500":"text-sub-color"}`} >15</button>
+                <button  onClick={handleTimeChange} id="30" className={`ml-4 hover:text-text-color ${Number(testTime)==30?"text-yellow-500":"text-sub-color"}`} >30</button>
+                <button  onClick={handleTimeChange} id="60" className={`ml-4 hover:text-text-color ${Number(testTime)==60?"text-yellow-500":"text-sub-color"}`} >60</button>
+                <button  onClick={handleTimeChange} id="120" className={`ml-4 hover:text-text-color ${Number(testTime)==120?"text-yellow-500":"text-sub-color"}`} >120</button>
+                {/*<button  onClick={handleTimeChange} id="custom" className={`ml-4 ${Number(testTime==15?"text-sub-color":"text-yellow-500")}`} ><div  className=" pt-0.5 flex justify-center items-center mr-2"><FaTools size="1em" /></div></button>*/}
 
               </div>
             </div>
@@ -136,7 +154,7 @@ export default function App() {
         {/*Main text */}
         {!gameEnded?
           <div className="flex flex-col  text-lg mb-32 ">
-          <div className="flex relative">
+          <div className={`flex relative transition duration-200 ease-in ${triggerTransition ? 'trigger-transition-class' : ''}`}>
             <div className="absolute text-xl text-yellow-500">{timeStarted && time}</div>
             <div className="flex flex-row justify-center w-full">
               
