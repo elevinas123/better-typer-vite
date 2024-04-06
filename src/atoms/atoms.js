@@ -1,6 +1,5 @@
 import { atom } from "jotai";
 
 
-const textWrittenAtom = atom("")
-
-export {textWrittenAtom}
+export const textWrittenAtom = atom("")
+export const currentTextAtom = atom("");

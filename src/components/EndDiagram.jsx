@@ -1,5 +1,5 @@
 import { useAtom } from "jotai"
-import { textWrittenAtom } from "../atoms/atoms"
+import { currentTextAtom, textWrittenAtom } from "../atoms/atoms"
 import { useEffect, useState } from "react"
 
 
@@ -9,12 +9,15 @@ export default function EndDiagram (props) {
 
 
     const [textWritten, setTextWritten] = useAtom(textWrittenAtom)
+    const [currentText, setCurrentText] = useAtom(currentTextAtom)
     const [wpm, setWpm] = useState(0)
     const [acc, setAcc] = useState(0)
 
     useEffect(() => {
+        console.log("textWritten", textWritten);
+        console.log("text", currentText);
         const splitTextWritten = textWritten.split("/sp /sp")
-        const splitText = props.text.split(" ")
+        const splitText = currentText.split("/sp /sp");
         
         let acuracy = splitTextWritten.length
         for(let i=0; i<splitTextWritten.length - 1; i++) {
@@ -45,7 +48,27 @@ export default function EndDiagram (props) {
         setWpm(60/props.time*splitTextWritten.length)
         setAcc(Math.floor(acuracy/splitTextWritten.length * 100))
     }, [textWritten])
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            
+           
+             if (event.key === "Escape") {
+                props.handleReset();
+            }
+            if (event.key.length > 1) {
+                return;
+            }
 
+            setTextWritten((textWritten) => textWritten + event.key);
+        };
+        // Add event listener when component mounts
+        document.addEventListener("keydown", handleKeyPress);
+
+        // Cleanup: Remove event listener when component unmounts
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, []);
     return (
         <div className="flex flex-col">
             <div className="flex flex-col">

@@ -32,6 +32,8 @@ export default function App() {
   
   useEffect(() => {
     console.log("cia")
+    
+
     setTriggerTransition(true);
     
     // Optional: Reset the trigger after the transition duration
@@ -86,18 +88,27 @@ export default function App() {
   const startTime = () => {
     setTimeStarted(true)
    
-}
-  const handleReset = () => {
+  }
+
+  useEffect(() => {
+    console.log("time", time)
+  }, [time])
+
+
+  const handleReset = (newTime = false) => {
+    console.log("resetino")
     setGameEnded(false)
     setTimeStarted(false)
-    setTime(testTime)
+    if (!newTime) setTime(testTimeRef.current);
+    else setTime(newTime)
     setTextWritten("")
   }
   const handleTimeChange = (e) => {
     console.log(e.target.id)
     if (e.target.id == "custom") return
-    setTestTime(Number(e.target.id))
-    handleReset()
+    setTestTime(Number(e.target.id));
+    handleReset(Number(e.target.id));
+    console.log("newTime", Number(e.target.id));
   }
 
 
@@ -161,13 +172,13 @@ export default function App() {
               <div className="ml-4 flex flex-row" ><div  className=" pt-0.5 flex justify-center items-center mr-2"><FaGlobeAmericas  size="0.85em" /></div> english</div>
             </div>
           </div>
-          <Text  startTime={startTime} timeStarted={timeStarted} />
+          <Text handleReset={handleReset}  startTime={startTime} timeStarted={timeStarted} />
           <div className="flex flex-row justify-center mt-10 text-xl">
             <div onClick={handleReset} className=" "><FaRedoAlt /></div>
           </div>
         </div>
           :
-          <EndDiagram time={testTime} handleReset={handleReset}  />
+          <EndDiagram  time={testTime} handleReset={handleReset}  />
 
         }
 
