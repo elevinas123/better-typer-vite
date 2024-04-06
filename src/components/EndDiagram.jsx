@@ -1,6 +1,7 @@
 import { useAtom } from "jotai"
 import { currentTextAtom, textWrittenAtom } from "../atoms/atoms"
 import { useEffect, useState } from "react"
+import { FaRedoAlt } from "react-icons/fa"
 
 
 
@@ -70,16 +71,20 @@ export default function EndDiagram (props) {
         };
     }, []);
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-32">
             <div className="flex flex-col">
-                <div className="text-3xl text-sub-color" >wpm</div>
-                <div className="text-yellow-500 text-4xl" >{wpm}</div>
+                <div className="text-3xl text-sub-color">wpm</div>
+                <div className="text-yellow-500 text-4xl">{wpm}</div>
             </div>
             <div className="flex flex-col">
-                <div className="text-3xl text-sub-color" >acc</div>
-                <div className="text-yellow-500 text-4xl" >{acc}%</div>
+                <div className="text-3xl text-sub-color">acc</div>
+                <div className="text-yellow-500 text-4xl">{acc}%</div>
             </div>
-            <div onClick={props.handleReset}>reset</div>
+            <div className="flex flex-row justify-center mt-10 text-xl">
+                <div onClick={props.handleReset}>
+                    <FaRedoAlt />
+                </div>
+            </div>
         </div>
-    )
+    );
 }
