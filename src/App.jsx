@@ -22,13 +22,14 @@ import EndDiagram from "./components/EndDiagram";
 
 export default function App() {
     const [textWritten, setTextWritten] = useAtom(textWrittenAtom);
-    const [testTime, setTestTime] = useState(15);
+    const [testTime, setTestTime] = useState(3);
     const testTimeRef = useRef();
     testTimeRef.current = testTime;
     const [time, setTime] = useState(testTime);
     const [timeStarted, setTimeStarted] = useState(false);
     const [gameEnded, setGameEnded] = useState(false);
     const [triggerTransition, setTriggerTransition] = useState(false);
+    const [reset, setReset] = useState(false)
 
     useEffect(() => {
         console.log("cia");
@@ -91,11 +92,12 @@ export default function App() {
 
     const handleReset = (newTime = false) => {
         console.log("resetino", newTime);
+        setReset(i => !i)
+        setTextWritten("");
         setGameEnded(false);
         setTimeStarted(false);
         if (!newTime) setTime(testTimeRef.current);
         else setTime(newTime);
-        setTextWritten("");
     };
     const handleTimeChange = (e) => {
         console.log(e.target.id);
@@ -121,13 +123,13 @@ export default function App() {
                                 <div className="flex flex-row  text-xs select-none">
                                     <button
                                         onClick={handleTimeChange}
-                                        id="15"
+                                        id="3"
                                         className={`ml-4 hover:text-text-color ${
-                                            Number(testTime) == 15 ? "text-yellow-500" : "text-sub-color"
+                                            Number(testTime) == 3 ? "text-yellow-500" : "text-sub-color"
                                         }`}
                                         onKeyDown={(e) => {
                                             // Prevents the default action if the space key is pressed
-                                            if (e.key === " " || e.key === "Spacebar") {
+                                            if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
                                                 // 'Spacebar' for older browsers
                                                 e.preventDefault();
                                             }
@@ -143,7 +145,7 @@ export default function App() {
                                         }`}
                                         onKeyDown={(e) => {
                                             // Prevents the default action if the space key is pressed
-                                            if (e.key === " " || e.key === "Spacebar") {
+                                            if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
                                                 // 'Spacebar' for older browsers
                                                 e.preventDefault();
                                             }
@@ -159,7 +161,7 @@ export default function App() {
                                         }`}
                                         onKeyDown={(e) => {
                                             // Prevents the default action if the space key is pressed
-                                            if (e.key === " " || e.key === "Spacebar") {
+                                            if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
                                                 // 'Spacebar' for older browsers
                                                 e.preventDefault();
                                             }
@@ -175,7 +177,7 @@ export default function App() {
                                         }`}
                                         onKeyDown={(e) => {
                                             // Prevents the default action if the space key is pressed
-                                            if (e.key === " " || e.key === "Spacebar") {
+                                            if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
                                                 // 'Spacebar' for older browsers
                                                 e.preventDefault();
                                             }
@@ -207,7 +209,7 @@ export default function App() {
                                 </div>
                             </div>
                         </div>
-                        <Text handleReset={handleReset} startTime={startTime} timeStarted={timeStarted} />
+                        <Text reset={reset} handleReset={handleReset} startTime={startTime} timeStarted={timeStarted} />
                         <div className="flex flex-row justify-center mt-10 text-xl">
                             <div onClick={handleReset}>
                                 <FaRedoAlt />

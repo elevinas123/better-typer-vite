@@ -45,7 +45,9 @@ export default function SentenceLine(props) {
 
     useEffect(() => {
         let splitWords = spaceSplit(props.sentence)
+        console.log("props.sentence", props.sentenceWritten)
         let splitWordsWritten = spaceSplit(props.sentenceWritten)
+        console.log("props.splitWordsWritten", splitWordsWritten);
         let splitSpaceWords = spaceSplitWord(props.sentence)
         let newWords = []
         let n = 0

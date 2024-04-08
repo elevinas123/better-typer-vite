@@ -56,11 +56,7 @@ export default function EndDiagram (props) {
              if (event.key === "Escape") {
                 props.handleReset();
             }
-            if (event.key.length > 1) {
-                return;
-            }
-
-            setTextWritten((textWritten) => textWritten + event.key);
+            
         };
         // Add event listener when component mounts
         document.addEventListener("keydown", handleKeyPress);
@@ -81,7 +77,7 @@ export default function EndDiagram (props) {
                 <div className="text-yellow-500 text-4xl">{acc}%</div>
             </div>
             <div className="flex flex-row justify-center mt-10 text-xl">
-                <div onClick={props.handleReset}>
+                <div onClick={() => props.handleReset()}>
                     <FaRedoAlt />
                 </div>
             </div>

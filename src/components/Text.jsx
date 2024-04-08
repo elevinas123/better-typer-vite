@@ -7,7 +7,7 @@ import SentenceLine from "./SentenceLine";
 
 export default function Text(props) {
     const [textWritten, setTextWritten] = useAtom(textWrittenAtom);
-    const [currentText, setCurrentText] = useAtom(currentTextAtom)
+    const [currentText, setCurrentText] = useAtom(currentTextAtom);
     const containerRef = useRef(null);
     const [sentences, setSentences] = useState("");
     const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 32 });
@@ -105,44 +105,56 @@ export default function Text(props) {
     };
 
     useEffect(() => {
-        setCurrentText(text)
-    }, [text])
+        setCurrentText(text);
+    }, [text]);
+    useEffect(() => {
+        setIndex(0)
+    }, [props.reset])
 
     useEffect(() => {
-        if (textRef.current.split("/enter").length < 5 + indexRef.current) {
+        console.log("va cia", textWritten)
+        let index = indexRef.current
+        if (textWritten === "") index = 0
+        if (textRef.current.split("/enter").length < 5 + index) {
             setText(
                 (text) => text + "/enter" + code[Math.floor(Math.random() * code.length)].replace(/\s/g, "/sp /sp")
             );
         }
         let splitText = enterSplit(text).splice(Math.max(0, index - 1), 5);
         let splitTextWritten = enterSplit(textWritten).splice(Math.max(0, index - 1), 5);
-        setSentences(
-            splitText.map((sentence, index) => (
-                <SentenceLine
-                    prevIndex={index + 1}
-                    updateCursorPosition={updateCursorPosition}
-                    index={index}
-                    pointer={index == splitTextWritten.length - 1 ? true : false}
-                    sentence={sentence}
-                    key={index}
-                    sentenceWritten={splitTextWritten[index] !== undefined ? splitTextWritten[index] : ""}
-                />
-            ))
-        );
+        console.log("splitTextWritten", splitTextWritten);
+        let newItems = splitText.map((sentence, index) => (
+            <SentenceLine
+                prevIndex={index + 1}
+                updateCursorPosition={updateCursorPosition}
+                index={index}
+                pointer={index == splitTextWritten.length - 1 ? true : false}
+                sentence={sentence}
+                key={index}
+                sentenceWritten={splitTextWritten[index] !== undefined ? splitTextWritten[index] : ""}
+            />
+        ));
+        console.log("newItems", newItems)
+        setSentences(newItems);
         if (textWritten == "") {
             setCursorPosition({ left: 0, top: 32 });
         }
         console.log("textWritten", textWritten);
         console.log("text", splitText);
     }, [textWritten, text]);
+    useEffect(() => {
+        console.log("sentences", sentences);
+    }, [sentences]);
 
     useEffect(() => {
         if (timeRef.current == false) {
             setCursorPosition({ left: 0, top: 32 });
         }
         const handleKeyPress = (event) => {
-            console.log("event", event)
+            console.log("event", event);
             if (!timeRef.current) {
+                console.log("timeStarted")
+                setIndex(0)
                 props.startTime();
             }
             // Prevent default behavior if needed
@@ -168,14 +180,19 @@ export default function Text(props) {
                 console.log("refIndex", 2 + indexRef.current);
 
                 return;
-            } else if (event.key === "Escape") {
-                props.handleReset();
+            } 
+            if (event.key === "Escape") {
+                props.handleReset()
             }
             if (event.key.length > 1) {
                 return;
             }
-
-            setTextWritten((textWritten) => textWritten + event.key);
+            console.log("ten")
+            setTextWritten((text) => {
+                let newText = text + event.key;
+                console.log("newText", newText)
+                return newText
+            });
         };
         // Add event listener when component mounts
         document.addEventListener("keydown", handleKeyPress);
@@ -189,7 +206,7 @@ export default function Text(props) {
 
     return (
         <div ref={containerRef} className="relative ">
-            <div className=" relative text-2xl  mt-4 flex flex-col flex-wrap overflow-hidden text-pretty select-none">
+            <div className=" relative text-2xl  mt-4 flex flex-col flex-wrap  text-pretty select-none">
                 {sentences}
             </div>
             <Cursor left={cursorPosition.left} top={cursorPosition.top} />
