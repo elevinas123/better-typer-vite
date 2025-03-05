@@ -9,5 +9,33 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+                       (function () {
+                           var chatbotOrigin = "http://localhost:5173"; // ✅ iFrame origin
+                           var embeddingOrigin = window.location.origin; // ✅ Securely get the embedding website's origin
+
+                           var iframe = document.createElement("iframe");
+                           iframe.src = chatbotOrigin;
+                           iframe.width = "400";
+                           iframe.height = "600";
+                           iframe.style.border = "none";
+                           iframe.style.position = "fixed";
+                           iframe.style.bottom = "20px";
+                           iframe.style.right = "20px";
+                           iframe.style.zIndex = "1000";
+
+                           document.body.appendChild(iframe);
+
+                           // ✅ Once the iframe is loaded, send the embedding origin
+                          iframe.onload = function () {
+                           console.log("hi");
+                           setTimeout(() => {
+                              iframe.contentWindow.postMessage({ type: "SET_ORIGIN", origin: embeddingOrigin }, "*");
+                           }, 500); // Wait for React to mount
+                           };
+
+                        })();
+
+                     </script>
   </body>
 </html>
