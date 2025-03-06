@@ -27,6 +27,7 @@
     })
     .then(response => response.json())
     .then(data => {
+      console.log("data", data)
         if (!data.sessionUrl) {
             throw new Error("Session URL not provided by backend.");
         }
