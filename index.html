@@ -10,50 +10,27 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-                       (function () {
-    const BACKEND_URL = "http://localhost:3001/api/v1/session/generate";
+    (async function () {
+        const CHATBOT_DEV_URL = "http://localhost:5173"; // ✅ Point to the chatbot dev server
     
-    // ✅ Define the publicId and scriptId (can be dynamic if needed)
-    const publicId = "AUbpqLcrz0c0beB";
-    const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
+        console.log("[Chatbot Embed] Loading chatbot from:", CHATBOT_DEV_URL);
+    
+        // ✅ Create a chatbot container
+        const chatbotContainer = document.createElement("div");
+        chatbotContainer.id = "chatbot-container";
+    
+        // ✅ Attach Shadow DOM to isolate styles
+        const shadowRoot = chatbotContainer.attachShadow({ mode: "open" });
+    
+        // ✅ Load the chatbot JavaScript dynamically from the separate project
+        const script = document.createElement("script");
+        script.src = `${CHATBOT_DEV_URL}/main.js`; // ✅ Your Vite/React entry file
+        script.type = "module";
+    
+        shadowRoot.appendChild(script);
+        document.body.appendChild(chatbotContainer);
+    })();
+</script>
 
-    console.log("[Embed Script] Requesting session for:", { publicId, scriptId });
-
-    // ✅ Request a session from the backend
-    fetch(`${BACKEND_URL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicId, scriptId }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log("data", data)
-        if (!data.sessionUrl) {
-            throw new Error("Session URL not provided by backend.");
-        }
-
-        console.log("[Embed Script] Received session URL:", data.sessionUrl);
-
-        // ✅ Create and configure the iframe dynamically
-        const chatbotFrame = document.createElement("iframe");
-        chatbotFrame.src = data.sessionUrl;  // Secure iframe URL provided by backend
-        chatbotFrame.width = "400";
-        chatbotFrame.height = "600";
-        chatbotFrame.style.border = "none";
-        chatbotFrame.style.position = "fixed";
-        chatbotFrame.style.bottom = "20px";
-        chatbotFrame.style.right = "20px";
-        chatbotFrame.style.zIndex = "1000";
-
-        // ✅ Append the iframe to the embedding website
-        document.body.appendChild(chatbotFrame);
-    })
-    .catch(error => {
-        console.error("[Embed Script] Failed to load chatbot iframe:", error);
-    });
-})();
-
-
-                     </script>
   </body>
 </html>
