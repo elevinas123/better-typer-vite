@@ -11,30 +11,47 @@
     <script type="module" src="/src/main.jsx"></script>
     <script>
                        (function () {
-                           var chatbotOrigin = "http://localhost:5173"; // ✅ iFrame origin
-                           var embeddingOrigin = window.location.origin; // ✅ Securely get the embedding website's origin
+    const BACKEND_URL = "http://localhost:3001/api/v1/session";
+    
+    // ✅ Define the publicId and scriptId (can be dynamic if needed)
+    const publicId = "AUbpqLcrz0c0beB";
+    const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
 
-                           var iframe = document.createElement("iframe");
-                           iframe.src = chatbotOrigin;
-                           iframe.width = "400";
-                           iframe.height = "600";
-                           iframe.style.border = "none";
-                           iframe.style.position = "fixed";
-                           iframe.style.bottom = "20px";
-                           iframe.style.right = "20px";
-                           iframe.style.zIndex = "1000";
+    console.log("[Embed Script] Requesting session for:", { publicId, scriptId, embeddingOrigin });
 
-                           document.body.appendChild(iframe);
+    // ✅ Request a session from the backend
+    fetch(`${BACKEND_URL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicId, scriptId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.sessionUrl) {
+            throw new Error("Session URL not provided by backend.");
+        }
 
-                           // ✅ Once the iframe is loaded, send the embedding origin
-                          iframe.onload = function () {
-                           console.log("hi");
-                           setTimeout(() => {
-                              iframe.contentWindow.postMessage({ type: "SET_ORIGIN", origin: embeddingOrigin }, "*");
-                           }, 500); // Wait for React to mount
-                           };
+        console.log("[Embed Script] Received session URL:", data.sessionUrl);
 
-                        })();
+        // ✅ Create and configure the iframe dynamically
+        const chatbotFrame = document.createElement("iframe");
+        chatbotFrame.src = data.sessionUrl;  // Secure iframe URL provided by backend
+        chatbotFrame.width = "400";
+        chatbotFrame.height = "600";
+        chatbotFrame.style.border = "none";
+        chatbotFrame.style.position = "fixed";
+        chatbotFrame.style.bottom = "20px";
+        chatbotFrame.style.right = "20px";
+        chatbotFrame.style.zIndex = "1000";
+
+        // ✅ Append the iframe to the embedding website
+        document.body.appendChild(chatbotFrame);
+    })
+    .catch(error => {
+        console.error("[Embed Script] Failed to load chatbot iframe:", error);
+    });
+})();
+
 
                      </script>
   </body>
