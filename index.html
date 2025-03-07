@@ -10,13 +10,33 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-   (function() {
-      var script = document.createElement("script");
-      script.src = "http://localhost:3001/api/v1/session/generate?publicId=AUbpqLcrz0c0beB&scriptId=0a73890d-f8d1-463a-9e86-195da2c8c5bf";
-      script.setAttribute("referrerpolicy", "strict-origin-when-cross-origin"); // ✅ Ensures the browser sends the Referer
-      document.head.appendChild(script);
+   (async function() {
+      const publicId = "AUbpqLcrz0c0beB";
+      const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
+
+      try {
+         const response = await fetch(`http://localhost:3001/api/v1/session/generate?publicId=${publicId}&scriptId=${scriptId}`, {
+            method: "GET",
+            headers: {
+               "Content-Type": "application/json",
+               "Referer": window.location.href,  // ✅ Send Referer manually
+               "Origin": window.location.origin  // ✅ Send Origin manually
+            },
+            credentials: "include"  // ✅ Ensures cookies and CORS credentials are sent
+         });
+
+         if (!response.ok) throw new Error("Failed to fetch chatbot script");
+
+         const scriptContent = await response.text(); // Get JS as a string
+         const script = document.createElement("script");
+         script.textContent = scriptContent;  // ✅ Inject into page
+         document.head.appendChild(script);
+      } catch (error) {
+         console.error("Error loading chatbot:", error);
+      }
    })();
 </script>
+
 
   </body>
 </html>
