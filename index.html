@@ -9,8 +9,7 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-(async function() {
+   (async function() {
   const publicId = "AUbpqLcrz0c0beB";
   const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
 
@@ -20,7 +19,7 @@
       headers: {
         "Content-Type": "application/javascript",
         "Referer": window.location.href,
-        "Origin": window.location.origin
+        "Origin": window.location.origin"
       },
       credentials: "include"
     });
@@ -29,19 +28,20 @@
 
     const scriptContent = await response.text();
 
-    // ✅ Create a Blob URL and insert as module
+    console.log("✅ Fetched script content:", scriptContent); // 🚀 Debug here
+
     const blob = new Blob([scriptContent], { type: 'application/javascript' });
     const url = URL.createObjectURL(blob);
-    
+
     const script = document.createElement("script");
     script.type = "module";
     script.src = url;
     script.onload = () => {
-      URL.revokeObjectURL(url); // Clean up after load
-      console.log('✅ Chatbot script injected and loaded');
+      URL.revokeObjectURL(url);
+      console.log("✅ Chatbot script loaded successfully");
     };
     script.onerror = (e) => {
-      console.error('❌ Error loading chatbot script:', e);
+      console.error("❌ Error loading chatbot script:", e);
       URL.revokeObjectURL(url);
     };
 
@@ -50,7 +50,7 @@
     console.error("❌ Error loading chatbot:", error);
   }
 })();
-</script>
+
 
 
   </body>
