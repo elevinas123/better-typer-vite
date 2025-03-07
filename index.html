@@ -13,7 +13,7 @@
    (async function() {
   const publicId = "AUbpqLcrz0c0beB";
   const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
-
+  console.log("script loaded")
   try {
     const response = await fetch(`http://localhost:3001/api/v1/session/generate?publicId=${publicId}&scriptId=${scriptId}`, {
       method: "GET",
@@ -24,6 +24,7 @@
       },
       credentials: "include"
     });
+    console.log("fetching")
 
     if (!response.ok) throw new Error("Failed to fetch chatbot script");
 
