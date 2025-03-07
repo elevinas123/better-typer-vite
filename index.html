@@ -9,6 +9,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-   <script src="http://localhost:3001/api/v1/session/generate?publicId=AUbpqLcrz0c0beB&scriptId=0a73890d-f8d1-463a-9e86-195da2c8c5bf"></script>
+    <script>
+   (function() {
+      var script = document.createElement("script");
+      script.src = "http://localhost:3001/api/v1/session/generate?publicId=AUbpqLcrz0c0beB&scriptId=0a73890d-f8d1-463a-9e86-195da2c8c5bf";
+      script.setAttribute("referrerpolicy", "strict-origin-when-cross-origin"); // ✅ Ensures the browser sends the Referer
+      document.head.appendChild(script);
+   })();
+</script>
+
   </body>
 </html>
