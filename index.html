@@ -10,31 +10,46 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-   (async function() {
-      const publicId = "AUbpqLcrz0c0beB";
-      const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
+(async function() {
+  const publicId = "AUbpqLcrz0c0beB";
+  const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
 
-      try {
-         const response = await fetch(`http://localhost:3001/api/v1/session/generate?publicId=${publicId}&scriptId=${scriptId}`, {
-            method: "GET",
-            headers: {
-               "Content-Type": "application/json",
-               "Referer": window.location.href,  // ✅ Send Referer manually
-               "Origin": window.location.origin  // ✅ Send Origin manually
-            },
-            credentials: "include"  // ✅ Ensures cookies and CORS credentials are sent
-         });
+  try {
+    const response = await fetch(`http://localhost:3001/api/v1/session/generate?publicId=${publicId}&scriptId=${scriptId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/javascript",
+        "Referer": window.location.href,
+        "Origin": window.location.origin
+      },
+      credentials: "include"
+    });
 
-         if (!response.ok) throw new Error("Failed to fetch chatbot script");
+    if (!response.ok) throw new Error("Failed to fetch chatbot script");
 
-         const scriptContent = await response.text(); // Get JS as a string
-         const script = document.createElement("script");
-         script.textContent = scriptContent;  // ✅ Inject into page
-         document.head.appendChild(script);
-      } catch (error) {
-         console.error("Error loading chatbot:", error);
-      }
-   })();
+    const scriptContent = await response.text();
+
+    // ✅ Create a Blob URL and insert as module
+    const blob = new Blob([scriptContent], { type: 'application/javascript' });
+    const url = URL.createObjectURL(blob);
+    
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = url;
+    script.onload = () => {
+      URL.revokeObjectURL(url); // Clean up after load
+      console.log('✅ Chatbot script injected and loaded');
+    };
+    script.onerror = (e) => {
+      console.error('❌ Error loading chatbot script:', e);
+      URL.revokeObjectURL(url);
+    };
+
+    document.head.appendChild(script);
+  } catch (error) {
+    console.error("❌ Error loading chatbot:", error);
+  }
+})();
 </script>
 
 
