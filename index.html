@@ -9,51 +9,8 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-   (async function() {
-  const publicId = "AUbpqLcrz0c0beB";
-  const scriptId = "0a73890d-f8d1-463a-9e86-195da2c8c5bf";
-  console.log("script loaded")
-  try {
-    const response = await fetch(`http://localhost:3001/api/v1/session/generate?publicId=${publicId}&scriptId=${scriptId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/javascript",
-        "Referer": window.location.href,
-        "Origin": window.location.origin
-      },
-      credentials: "include"
-    });
-    console.log("fetching")
-
-    if (!response.ok) throw new Error("Failed to fetch chatbot script");
-
-    const scriptContent = await response.text();
-
-    console.log("✅ Fetched script content:", scriptContent); // 🚀 Debug here
-
-    const blob = new Blob([scriptContent], { type: 'application/javascript' });
-    const url = URL.createObjectURL(blob);
-
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = url;
-    script.onload = () => {
-      URL.revokeObjectURL(url);
-      console.log("✅ Chatbot script loaded successfully");
-    };
-    script.onerror = (e) => {
-      console.error("❌ Error loading chatbot script:", e);
-      URL.revokeObjectURL(url);
-    };
-
-    document.head.appendChild(script);
-  } catch (error) {
-    console.error("❌ Error loading chatbot:", error);
-  }
-})();
-
-</script>
-
+   <script>
+      !async function(){console.log("script loaded");try{var e=await fetch("http://localhost:3001/api/v1/session/generate?publicId=ZNXK6pnqzgqudso&scriptId=cb22a354-d909-4c50-b46c-fed7a9edd46d",{method:"GET",headers:{"Content-Type":"application/javascript",Referer:window.location.href,Origin:window.location.origin},credentials:"include"});if(console.log("fetching"),!e.ok)throw new Error("Failed to fetch chatbot script");var o=await e.text(),t=(console.log("✅ Fetched script content:",o),new Blob([o],{type:"application/javascript"}));const r=URL.createObjectURL(t);var c=document.createElement("script");c.type="module",c.src=r,c.onload=()=>{URL.revokeObjectURL(r),console.log("✅ Chatbot script loaded successfully")},c.onerror=e=>{console.error("❌ Error loading chatbot script:",e),URL.revokeObjectURL(r)},document.head.appendChild(c)}catch(e){console.error("❌ Error loading chatbot:",e)}}();
+      </script>
   </body>
 </html>
