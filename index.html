@@ -10,8 +10,9 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   
+     
       <script>
-      !async function(){console.log("script loaded");try{var e=await fetch("http://localhost:3001/api/v1/user/widget/generate?publicId=5f2e7dd4-b88b-4163-ae03-1d2bb60ff2c2&scriptId=ccb8fa3d-c654-48b4-aa41-23bf0d95e3e3",{method:"GET",headers:{"Content-Type":"application/javascript",Referer:window.location.href,Origin:window.location.origin},credentials:"include"});if(console.log("fetching"),!e.ok)throw new Error("Failed to fetch chatbot script");var o=await e.text(),t=(console.log("✅ Fetched script content:",o),new Blob([o],{type:"application/javascript"}));const r=URL.createObjectURL(t);var c=document.createElement("script");c.type="module",c.src=r,c.onload=()=>{URL.revokeObjectURL(r),console.log("✅ Chatbot script loaded successfully")},c.onerror=e=>{console.error("❌ Error loading chatbot script:",e),URL.revokeObjectURL(r)},document.head.appendChild(c)}catch(e){console.error("❌ Error loading chatbot:",e)}}();
+      !async function(){console.log("script loaded");try{var e=await fetch("http://localhost:3001/api/v1/user/widget/generate?publicId=48a31397-15a4-4317-9ced-37b55aa57f27&scriptId=36d32ced-76ad-4f8c-8ac9-9ebc703a9dd4",{method:"GET",headers:{"Content-Type":"application/javascript",Referer:window.location.href,Origin:window.location.origin},credentials:"include"});if(console.log("fetching"),!e.ok)throw new Error("Failed to fetch chatbot script");var o=await e.text(),t=(console.log("✅ Fetched script content:",o),new Blob([o],{type:"application/javascript"}));const r=URL.createObjectURL(t);var c=document.createElement("script");c.type="module",c.src=r,c.onload=()=>{URL.revokeObjectURL(r),console.log("✅ Chatbot script loaded successfully")},c.onerror=e=>{console.error("❌ Error loading chatbot script:",e),URL.revokeObjectURL(r)},document.head.appendChild(c)}catch(e){console.error("❌ Error loading chatbot:",e)}}();
       </script>
   </body>
 </html>
