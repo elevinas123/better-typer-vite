@@ -11,8 +11,30 @@
     <script type="module" src="/src/main.jsx"></script>
   
      
-      <script>
-      !async function(){console.log("script loaded");try{var e=await fetch("http://localhost:3001/api/v1/user/widget/generate?publicId=48a31397-15a4-4317-9ced-37b55aa57f27&scriptId=36d32ced-76ad-4f8c-8ac9-9ebc703a9dd4",{method:"GET",headers:{"Content-Type":"application/javascript",Referer:window.location.href,Origin:window.location.origin},credentials:"include"});if(console.log("fetching"),!e.ok)throw new Error("Failed to fetch chatbot script");var o=await e.text(),t=(console.log("✅ Fetched script content:",o),new Blob([o],{type:"application/javascript"}));const r=URL.createObjectURL(t);var c=document.createElement("script");c.type="module",c.src=r,c.onload=()=>{URL.revokeObjectURL(r),console.log("✅ Chatbot script loaded successfully")},c.onerror=e=>{console.error("❌ Error loading chatbot script:",e),URL.revokeObjectURL(r)},document.head.appendChild(c)}catch(e){console.error("❌ Error loading chatbot:",e)}}();
-      </script>
+     
+     <script>
+      !async function() {
+      try {
+         const response = await fetch("http://localhost:3001/api/v1/user/widget/generate?scriptId=0e54c925-2452-421d-8eb0-be8e1a117a9b", {
+            headers: {
+            Referer: location.href,
+            Origin: location.origin
+            },
+            credentials: "include"
+         });
+         if (!response.ok) throw 0;
+         const scriptContent = await response.text();
+         const blobUrl = URL.createObjectURL(new Blob([scriptContent]));
+         const script = document.createElement("script");
+         script.type = "module";
+         script.src = blobUrl;
+         script.onload = script.onerror = () => URL.revokeObjectURL(blobUrl);
+         document.head.appendChild(script);
+      } catch (error) {
+         console.error("❌ Chatbot failed", error);
+      }
+      }();
+   </script>
+   
   </body>
 </html>
