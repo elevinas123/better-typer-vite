@@ -12,10 +12,11 @@
   
      
      
+    
      <script>
       !async function() {
       try {
-         const response = await fetch("http://localhost:3001/api/v1/user/widget/generate?scriptId=0e54c925-2452-421d-8eb0-be8e1a117a9b", {
+         const response = await fetch("http://localhost:3001/api/v1/user/widget/generate?scriptId=d11e8d52-7502-4357-ad0a-c16c6dcbe164", {
             headers: {
             Referer: location.href,
             Origin: location.origin
@@ -24,7 +25,7 @@
          });
          if (!response.ok) throw 0;
          const scriptContent = await response.text();
-         const blobUrl = URL.createObjectURL(new Blob([scriptContent]));
+         const blobUrl = URL.createObjectURL(new Blob([scriptContent], { type: "application/javascript" }));
          const script = document.createElement("script");
          script.type = "module";
          script.src = blobUrl;
@@ -35,6 +36,7 @@
       }
       }();
    </script>
+   
    
   </body>
 </html>
