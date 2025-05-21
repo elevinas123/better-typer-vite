@@ -12,33 +12,38 @@
   
      
      
-   
- 
-     <script>
-      !async function() {
+   <script>
+   !async function () {
       try {
-         const response = await fetch("http://localhost:3001/api/v1/user/widget/generate?scriptId=61d27567-31dc-4b3a-8c40-b0e86c2ef656", {
+         const response = await fetch(
+            "http://localhost:3001/api/v1/user/widget/generate?scriptId=69cbf483-5136-4e01-943e-4b068d61777f",
+            {
             headers: {
-            Referer: location.href,
-            Origin: location.origin
+               Referer: location.href,
+               Origin:  location.origin,
             },
-            credentials: "include"
-         });
-         if (!response.ok) throw 0;
+            credentials: "include",
+            },
+         );
+
+         if (!response.ok) throw new Error("Widget fetch failed");
+
          const scriptContent = await response.text();
-         const blobUrl = URL.createObjectURL(new Blob([scriptContent], { type: "application/javascript" }));
+         const blobUrl = URL.createObjectURL(
+            new Blob([scriptContent], { type: "application/javascript" }),
+         );
+
          const script = document.createElement("script");
          script.type = "module";
-         script.src = blobUrl;
+         script.src  = blobUrl;
          script.onload = script.onerror = () => URL.revokeObjectURL(blobUrl);
+
          document.head.appendChild(script);
       } catch (error) {
          console.error("❌ Chatbot failed", error);
       }
-      }();
-   </script>
-   
-   
+   }();
+</script>
    
    
    
