@@ -10,27 +10,36 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 <script>
-      !async function() {
+   !async function () {
       try {
-         const response = await fetch("http://localhost:3001/api/v1/user/widget/generate?scriptId=0ef4ccfa-1bc5-4790-8540-8c2d37ea0346", {
+         const response = await fetch(
+            "http://localhost:3001/api/v1/user/widget/generate?scriptId=9843bdae-89d4-40fb-994f-b822c3a77b01",
+            {
             headers: {
-            Referer: location.href,
-            Origin: location.origin
+               Referer: location.href,
+               Origin:  location.origin,
             },
-            credentials: "include"
-         });
-         if (!response.ok) throw 0;
+            credentials: "include",
+            },
+         );
+
+         if (!response.ok) throw new Error("Widget fetch failed");
+
          const scriptContent = await response.text();
-         const blobUrl = URL.createObjectURL(new Blob([scriptContent], { type: "application/javascript" }));
+         const blobUrl = URL.createObjectURL(
+            new Blob([scriptContent], { type: "application/javascript" }),
+         );
+
          const script = document.createElement("script");
          script.type = "module";
-         script.src = blobUrl;
+         script.src  = blobUrl;
          script.onload = script.onerror = () => URL.revokeObjectURL(blobUrl);
+
          document.head.appendChild(script);
       } catch (error) {
          console.error("❌ Chatbot failed", error);
       }
-      }();
-   </script>
+   }();
+</script>
   </body>
 </html>
